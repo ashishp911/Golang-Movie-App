@@ -1,52 +1,39 @@
-package bizlogic
+package my_movies
 
 import (
-	// "fmt"
 	"net/http"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"go-crud-movies/models"
 )
 
-// using structs instead of database
-type Movie struct {
-	ID       string    `json:"id"`
-	Isbn     string    `json:"isbn"`
-	Title    string    `json:"title"`
-	Director *Director `json:"director"`
-}
 
-type Director struct {
-	FirstName string `json:"firstname"`
-	LastName  string `json:"lastname"`
-}
-
-var movies []Movie
-
+var movies []models.Movie
 func All_bizz_logic() {
 	// dummy data 
-	movies = append(movies, Movie{
+	movies = append(movies, models.Movie{
 		ID:"1",
 		Isbn: "43811ab",
 		Title: "Titanic",
-		Director: &Director{
+		Director: &models.Director{
 			FirstName: "John",
 			LastName: "Mayers",
 		},
 	})
-	movies = append(movies, Movie{
+	movies = append(movies, models.Movie{
 		ID:"2",
 		Isbn: "43699yz",
 		Title: "Shawshank Redemption",
-		Director: &Director{
+		Director: &models.Director{
 			FirstName: "David",
 			LastName: "Guttenberg",
 		},
 	})
-	movies = append(movies, Movie{
+	movies = append(movies, models.Movie{
 		ID:"3",
 		Isbn: "43322fy",
 		Title: "Forrest Gump",
-		Director: &Director{
+		Director: &models.Director{
 			FirstName: "Michael",
 			LastName: "Scott",
 		},
@@ -89,7 +76,7 @@ func DeleteMovie(w http.ResponseWriter, r *http.Request) {
 
 func CreateMovie(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json")
-	var movie Movie
+	var movie models.Movie
 	_ = json.NewDecoder(r.Body).Decode(&movie)
 	// movie.ID = strconv.Itoa(rand.Intn(1000))
 	movies = append(movies, movie)
@@ -105,7 +92,7 @@ func UpdateMovie(w http.ResponseWriter, r *http.Request){
 	for index, items := range movies{
 		if items.ID == params["id"]{
 			movies = append(movies[:index], movies[index+1:]...)
-			var movie Movie 
+			var movie models.Movie 
 			_ = json.NewDecoder(r.Body).Decode(&movie)
 			movie.ID = params["id"]
 			movies = append(movies, movie)	
