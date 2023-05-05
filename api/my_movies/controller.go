@@ -1,10 +1,13 @@
 package my_movies
 
 import (
-	"net/http"
 	"encoding/json"
-	"github.com/gorilla/mux"
+	"fmt"
+	"go-crud-movies/db"
 	"go-crud-movies/models"
+	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 
@@ -81,6 +84,12 @@ func CreateMovie(w http.ResponseWriter, r *http.Request){
 	// movie.ID = strconv.Itoa(rand.Intn(1000))
 	movies = append(movies, movie)
 	json.NewEncoder(w).Encode(movie)
+	
+	// Connect to Databse
+	my_db := db.Connect()
+	fmt.Println(my_db)
+	// Adding the record to DB
+	db.AddtoDB(my_db, movie)
 }
 
 func UpdateMovie(w http.ResponseWriter, r *http.Request){
