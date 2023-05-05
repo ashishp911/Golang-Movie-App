@@ -47,6 +47,9 @@ func GetMovies(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	// return the list of all the movies
 	json.NewEncoder(w).Encode(movies)
+	// Connect to Databse
+	// my_db := db.Connect()
+	// db.GetAllMovies(my_db, movies)
 }
 
 func GetMovie(w http.ResponseWriter, r *http.Request){
@@ -57,6 +60,8 @@ func GetMovie(w http.ResponseWriter, r *http.Request){
 	for _, item := range movies{
 		if params["id"] == item.ID{
 			json.NewEncoder(w).Encode(item)
+			// my_db := db.Connect()
+			// db.GetAMovie(my_db, item)
 			return
 		}
 	} 
@@ -110,6 +115,11 @@ func UpdateMovie(w http.ResponseWriter, r *http.Request){
 			var movie models.Movie 
 			_ = json.NewDecoder(r.Body).Decode(&movie)
 			movie.ID = params["id"]
+		
+			// Connect to Databse
+			my_db := db.Connect()
+			db.UpdateInDB(my_db, movie)
+		
 			movies = append(movies, movie)	
 			json.NewEncoder(w).Encode(movie)
 			return 	
