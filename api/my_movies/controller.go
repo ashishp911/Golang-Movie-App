@@ -70,11 +70,17 @@ func DeleteMovie(w http.ResponseWriter, r *http.Request) {
 		if item.ID == params["id"]{
 			// append all the data except the data with ID == params["ID"]
 			movies = append(movies[:index], movies[index+1:]...)
+			// Deleting from Database
+			fmt.Println("Deleting from a database")
+			// Connect to Databse
+			my_db := db.Connect()
+			db.DeleteFromDB(my_db, item.ID)
 			break
 		}
 	}
 	// after deleting the movie, show all the movies to the frontend
 	json.NewEncoder(w).Encode(movies)
+
 }
 
 func CreateMovie(w http.ResponseWriter, r *http.Request){
@@ -84,10 +90,10 @@ func CreateMovie(w http.ResponseWriter, r *http.Request){
 	// movie.ID = strconv.Itoa(rand.Intn(1000))
 	movies = append(movies, movie)
 	json.NewEncoder(w).Encode(movie)
-	
+
 	// Connect to Databse
 	my_db := db.Connect()
-	fmt.Println(my_db)
+
 	// Adding the record to DB
 	db.AddtoDB(my_db, movie)
 }
