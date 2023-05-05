@@ -12,44 +12,14 @@ import (
 
 
 var movies []models.Movie
-func All_bizz_logic() {
-	// dummy data 
-	movies = append(movies, models.Movie{
-		ID:"1",
-		Isbn: "43811ab",
-		Title: "Titanic",
-		Director: &models.Director{
-			FirstName: "John",
-			LastName: "Mayers",
-		},
-	})
-	movies = append(movies, models.Movie{
-		ID:"2",
-		Isbn: "43699yz",
-		Title: "Shawshank Redemption",
-		Director: &models.Director{
-			FirstName: "David",
-			LastName: "Guttenberg",
-		},
-	})
-	movies = append(movies, models.Movie{
-		ID:"3",
-		Isbn: "43322fy",
-		Title: "Forrest Gump",
-		Director: &models.Director{
-			FirstName: "Michael",
-			LastName: "Scott",
-		},
-	})
-}
 
 func GetMovies(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	// Connect to Databse
+	my_db := db.Connect()
+	movies = db.GetAllMovies(my_db, movies)
 	// return the list of all the movies
 	json.NewEncoder(w).Encode(movies)
-	// Connect to Databse
-	// my_db := db.Connect()
-	// db.GetAllMovies(my_db, movies)
 }
 
 func GetMovie(w http.ResponseWriter, r *http.Request){
@@ -60,8 +30,8 @@ func GetMovie(w http.ResponseWriter, r *http.Request){
 	for _, item := range movies{
 		if params["id"] == item.ID{
 			json.NewEncoder(w).Encode(item)
-			// my_db := db.Connect()
-			// db.GetAMovie(my_db, item)
+			my_db := db.Connect()
+			db.GetAMovie(my_db, item)
 			return
 		}
 	} 
@@ -92,7 +62,6 @@ func CreateMovie(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json")
 	var movie models.Movie
 	_ = json.NewDecoder(r.Body).Decode(&movie)
-	// movie.ID = strconv.Itoa(rand.Intn(1000))
 	movies = append(movies, movie)
 	json.NewEncoder(w).Encode(movie)
 

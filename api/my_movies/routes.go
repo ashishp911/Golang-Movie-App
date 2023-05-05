@@ -13,7 +13,6 @@ import (
 
 func Enter_routes() {
 	my_router := mux.NewRouter()
-	All_bizz_logic()
 	my_router.HandleFunc("/movies", GetMovies).Methods("GET")
 	my_router.HandleFunc("/movies/{id}", GetMovie).Methods("GET")
 	my_router.HandleFunc("/movies", CreateMovie).Methods("POST")
