@@ -3,11 +3,7 @@ package my_movies
 import (
 	"fmt"
 	"net/http"
-
 	"github.com/gorilla/mux"
-
-	// "encoding/json"
-	// "api/my_movies"
 	"log"
 )
 

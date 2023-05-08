@@ -3,9 +3,9 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"go-crud-movies/models"
 	"log"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 func Connect() *sql.DB {
@@ -48,7 +48,7 @@ func UpdateInDB(db *sql.DB, movie models.Movie) {
 	fmt.Println("Record updated successfully.")
 }
 
-func GetAllMovies(db *sql.DB, movies []models.Movie) []models.Movie{
+func GetAllMovies(db *sql.DB, movies []models.Movie) []models.Movie {
 
 	rows, err := db.Query(`SELECT id, isbn, title, director_firstname, director_lastname FROM movies`) // check err
 	if err != nil {
