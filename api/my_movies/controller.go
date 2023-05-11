@@ -3,10 +3,11 @@ package my_movies
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"go-crud-movies/db"
 	"go-crud-movies/models"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 var movies []models.Movie
@@ -15,7 +16,7 @@ func GetMovies(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	// Connect to Databse
 	my_db := db.Connect()
-	movies = db.GetAllMovies(my_db, movies)
+	movies = GetAllMovies(my_db, movies)
 	// return the list of all the movies
 	json.NewEncoder(w).Encode(movies)
 }
@@ -29,7 +30,7 @@ func GetMovie(w http.ResponseWriter, r *http.Request) {
 		if params["id"] == item.ID {
 			json.NewEncoder(w).Encode(item)
 			my_db := db.Connect()
-			db.GetAMovie(my_db, item)
+			GetAMovie(my_db, item)
 			return
 		}
 	}
@@ -47,7 +48,7 @@ func DeleteMovie(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Deleting from a database")
 			// Connect to Databse
 			my_db := db.Connect()
-			db.DeleteFromDB(my_db, item.ID)
+			DeleteFromDB(my_db, item.ID)
 			break
 		}
 	}
@@ -65,7 +66,7 @@ func CreateMovie(w http.ResponseWriter, r *http.Request) {
 	// Connect to Databse
 	my_db := db.Connect()
 	// Adding the record to DB
-	db.AddtoDB(my_db, movie)
+	AddtoDB(my_db, movie)
 }
 
 func UpdateMovie(w http.ResponseWriter, r *http.Request) {
@@ -83,7 +84,7 @@ func UpdateMovie(w http.ResponseWriter, r *http.Request) {
 
 			// Connect to Databse
 			my_db := db.Connect()
-			db.UpdateInDB(my_db, movie)
+			UpdateInDB(my_db, movie)
 
 			movies = append(movies, movie)
 			json.NewEncoder(w).Encode(movie)
